@@ -351,6 +351,9 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="XQn-lo-d8b"/>
                         <barButtonItem title="Lookup Place" id="mBi-Zx-s8J">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="lookupPlacePressed:" destination="L7d-5i-Cie" id="dKN-eT-0pt"/>
+                            </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" leftItemsSupplementBackButton="YES" id="R1z-zr-Kjm">
@@ -430,7 +433,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="sl5-aU-Gjj"/>
+        <segue reference="Zox-RK-nHB"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="camera-icon-white" width="24" height="17"/>
