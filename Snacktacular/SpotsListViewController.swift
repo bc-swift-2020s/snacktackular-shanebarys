@@ -45,6 +45,7 @@ class SpotsListViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isHidden = true
         
         spots = Spots()
         spots.spotArray.append(Spot(name: "El Pelon", address: "Comm Ave", coordinate: CLLocationCoordinate2D(), averageRating: 0.0, numberOfReviews: 0, postingUserID: "", documentID: ""))
@@ -64,6 +65,8 @@ class SpotsListViewController: UIViewController {
         if authUI.auth?.currentUser == nil {
             self.authUI.providers = providers
             present(authUI.authViewController(), animated: true, completion: nil)
+        } else {
+            tableView.isHidden = false
         }
 
     }
@@ -79,6 +82,22 @@ class SpotsListViewController: UIViewController {
             }
         }
     }
+    
+    
+    @IBAction func signOutPressed(_ sender: UIBarButtonItem) {
+        do {
+            try authUI.signOut()
+            print("^^^ Successfully signed out!")
+            tableView.isHidden = true
+            signIn()
+        } catch {
+            tableView.isHidden = true
+            print("*** ERROR: Couldn't sign out :(")
+        }
+        
+
+    }
+    
 }
 
 extension SpotsListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -109,8 +128,25 @@ extension SpotsListViewController: FUIAuthDelegate {
     }
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
         if let user = user {
+            tableView.isHidden = false
             print("*** signed in with user \(user.email ?? "unknown email")")
         }
-        print("")
+    }
+    
+    func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
+        let loginViewController = FUIAuthPickerViewController(authUI: authUI)
+        loginViewController.view.backgroundColor = UIColor.white
+        
+        let marginInsets: CGFloat = 16
+        let imageHeight: CGFloat = 225
+        let imageY = self.view.center.y - imageHeight
+        let logoFrame = CGRect(x: self.view.frame.origin.x + marginInsets, y: imageY, width: self.view.frame.width - (marginInsets * 2), height: imageHeight)
+        let logoImageView = UIImageView(frame: logoFrame)
+        logoImageView.image = UIImage(named: "logo")
+        logoImageView.contentMode = .scaleAspectFit
+        loginViewController.view.addSubview(logoImageView)
+        
+        
+        return loginViewController
     }
 }
